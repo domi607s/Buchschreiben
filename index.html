@@ -78,7 +78,7 @@ main{overflow:auto;padding:20px 12px 40px;display:flex;flex-direction:column;ali
 #toast{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:40}#toast.s{opacity:1}
 body.focus #left,body.focus #right,body.focus header .hide{display:none}body.focus #app{grid-template-columns:1fr}body.focus header{grid-column:1}
 @media (max-width:1000px){#app{grid-template-columns:1fr;grid-template-rows:auto auto 1fr auto;height:auto}header,#left,#right{grid-column:1}#left,#right{max-height:30vh;border:0;border-bottom:1px solid var(--line)}body{overflow:auto}.sheet:not(.paged){--pw:100%!important}}
-@media print{body{overflow:visible;background:#fff}body::before,#toast{display:none}#app{display:none!important}
+@media print{html,body{height:auto!important}body{overflow:visible;background:#fff}body::before,#toast{display:none}#app{display:none!important}
  #book{display:block;font-family:var(--ff);font-size:var(--fs);line-height:var(--lh);color:#000}.bk .tp{break-before:avoid}}
 </style>
 </head>
@@ -233,7 +233,7 @@ function applySettings(){var s=S.s,r=document.documentElement,sz=SIZES[s.sz]||SI
  $("sheet").classList.toggle("dc",s.dc);$("sheet").classList.toggle("paged",s.view!=="flow");$("pgbar").hidden=s.view==="flow";
  if(s.th==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",s.th);
  var pos={bc:"@bottom-center",br:"@bottom-right",tc:"@top-center"}[s.pn];
- $("pgcss").textContent="@media print{@page{size:"+sz[0]+"mm "+sz[1]+"mm;margin:"+s.my+"mm "+s.mx+"mm;"+(pos?pos+"{content:counter(page,"+s.pf+");font:9pt "+s.ff+";color:#444}":"")+"}}";
+ $("pgcss").textContent="@page{size:"+sz[0]+"mm "+sz[1]+"mm;margin:"+s.my+"mm "+s.mx+"mm;"+(pos?pos+"{content:counter(page,"+s.pf+");font:9pt "+s.ff+";color:#444}":"")+"}";
  for(var id in MAP)$(id).value=s[MAP[id]];$("sDc").checked=s.dc}
 function bindSettings(){Object.keys(MAP).forEach(function(id){$(id).addEventListener("input",function(){var n=this.type==="number"||this.type==="range";S.s[MAP[id]]=n?(parseFloat(this.value)||0):this.value;applySettings();stats();save();if(mode==="pv")renderPv(pvPage);else pgLayout()})});
  $("sDc").addEventListener("change",function(){S.s.dc=this.checked;applySettings();save();if(mode==="pv")renderPv(pvPage);else pgLayout()})}
