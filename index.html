@@ -36,7 +36,7 @@ main{overflow:auto;padding:20px 12px 40px;display:flex;flex-direction:column;ali
 #tb select{padding:5px;background:transparent;border:1px solid var(--line);border-radius:8px}#tb .g{width:1px;height:20px;background:var(--line);margin:0 4px}
 .sheet{background:var(--paper);color:var(--paperink);box-shadow:0 2px 6px #0002,0 14px 40px #0001;width:var(--pw);min-height:var(--ph);padding:var(--mt) var(--mx);max-width:100%;font-family:var(--ff);font-size:var(--fs);line-height:var(--lh);border-radius:2px}
 #chtitle{font-size:1.9em;font-weight:700;text-align:center;margin:0 0 1.2em;outline:none;border:0;width:100%;background:none;color:inherit;font-family:inherit}
-#ed{outline:none;min-height:40vh;text-align:var(--al);hyphens:auto}
+#ed{outline:none;min-height:40vh;text-align:var(--al);hyphens:auto;overflow-wrap:break-word}
 #ed p,.bk p{margin:0 0 var(--ps);text-indent:var(--ind)}
 #ed p:first-child,.bk h2+div>p:first-child,.sb+p,#ed h3+p,#ed blockquote+p{text-indent:0}
 #ed h3{font-size:1.3em;margin:1.2em 0 .5em;text-align:left}#ed h4{font-size:1.1em;margin:1em 0 .4em;font-style:italic}
@@ -58,7 +58,7 @@ main{overflow:auto;padding:20px 12px 40px;display:flex;flex-direction:column;ali
 #pgnum{display:none}
 .sheet.paged{padding:0;height:var(--ph);min-height:0;overflow:hidden;position:relative;transform-origin:0 0;max-width:none}
 .sheet.paged #pgwrap{position:absolute;left:var(--mx);top:var(--mt);width:calc(var(--pw) - 2*var(--mx));height:calc(var(--ph) - 2*var(--mt));column-width:calc(var(--pw) - 2*var(--mx));column-gap:calc(2*var(--mx));column-fill:auto}
-.sheet.paged #ed{min-height:0}.sheet.paged #chtitle{display:block;margin-top:25%}
+.sheet.paged #ed{min-height:0}.sheet.paged #chtitle{display:block;margin-top:var(--cht,8%)}
 .sheet.paged #ed img{max-height:calc(var(--ph) - 2*var(--mt) - 12mm);break-inside:avoid}
 .sheet.paged #pgnum{display:block;position:absolute;left:0;right:0;font:9pt var(--ff);color:#444;text-align:center;pointer-events:none}
 /* Seitenvorschau */
@@ -69,7 +69,7 @@ main{overflow:auto;padding:20px 12px 40px;display:flex;flex-direction:column;ali
 #pvcols{position:absolute;left:var(--mx);top:var(--mt);width:calc(var(--pw) - 2*var(--mx));height:calc(var(--ph) - 2*var(--mt));column-width:calc(var(--pw) - 2*var(--mx));column-gap:calc(2*var(--mx));column-fill:auto;font-family:var(--ff);font-size:var(--fs);line-height:var(--lh)}
 #pvnum{position:absolute;font:9pt var(--ff);color:#444;left:0;right:0;text-align:center}
 #pvcols .pb{break-before:column}
-.bk{text-align:var(--al);hyphens:auto}.bk h2{font-size:1.8em;text-align:center;margin:25% 0 1.5em}.pb{break-before:page}
+.bk{text-align:var(--al);hyphens:auto;overflow-wrap:break-word;white-space:normal}.bk h2{font-size:1.7em;text-align:center;margin:var(--cht,8%) 0 1.2em}.pb{break-before:page}
 .tp{box-sizing:border-box;height:calc(var(--ph) - 2*var(--mt) - 2mm);display:flex;flex-direction:column;overflow:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toc h2{margin-top:0}
 #cvView{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}#cvstage{width:var(--pw);height:var(--ph);padding:var(--mt) var(--mx);background:#fff;color:#000;font-family:var(--ff);font-size:var(--fs);line-height:var(--lh);transform-origin:0 0;overflow:hidden;box-shadow:0 2px 6px #0002,0 14px 40px #0001}
 .row input[type=color]{width:130px;height:30px;padding:2px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}.tabs button{padding:6px 4px;font-size:13px}
@@ -183,6 +183,7 @@ body.focus #left,body.focus #right,body.focus header .hide{display:none}body.foc
   <div class="row"><label for="sPn">Position</label><select id="sPn"><option value="bc">Unten Mitte</option><option value="br">Unten rechts</option><option value="tc">Oben Mitte</option><option value="none">Keine</option></select></div>
   <div class="row"><label for="sPf">Format</label><select id="sPf"><option value="decimal">1, 2, 3</option><option value="lower-roman">i, ii, iii</option></select></div>
   <h2>Kapitel</h2>
+  <div class="row"><label for="sCh">Abstand Kapitelanfang</label><input type="range" id="sCh" min="0" max="30" step="1"></div>
   <div class="row"><label for="sCn">Kapitelüberschrift</label><select id="sCn"><option value="num">Kapitel 1: Titel</option><option value="only">Nur Titel</option><option value="n">Nur Nummer</option></select></div>
   <div class="row"><label for="sTh">Oberfläche</label><select id="sTh"><option value="auto">System</option><option value="light">Hell</option><option value="dark">Dunkel</option></select></div>
   <p style="color:var(--mute);font-size:12px">PDF-Tipp: Im Druckdialog „Als PDF speichern“, Ränder „Keine“ und „Kopf- und Fußzeilen“ aus.</p>
@@ -199,10 +200,10 @@ var KIND={chapter:"Kapitel",widmung:"Widmung",vorwort:"Vorwort",prolog:"Prolog",
 var FRONT={widmung:1,vorwort:1,prolog:1,impressum:1}, NOTOC={widmung:1,impressum:1};
 var D={title:"",author:"",goal:80000,dgoal:500,cur:0,titlePage:true,toc:true,ts:0,cover:{sub:"",extra:"",img:"",imgW:60,imgPos:"top",layout:"center",tf:"Literata,serif",ts:2.6,y:28,color:"#1a1a1a",bg:"#ffffff",line:true},
  chapters:[{id:1,k:"chapter",title:"",html:"",notes:""}],log:{},
- s:{ff:"Literata,serif",fs:11,lh:1.5,ps:0,ind:1.5,al:"justify",dc:false,sz:"A5",mx:20,my:22,pn:"bc",pf:"decimal",cn:"num",th:"auto",view:"flow"}};
+ s:{ff:"Literata,serif",fs:11,lh:1.5,ps:0,ind:1.5,al:"justify",dc:false,sz:"A5",mx:20,my:22,pn:"bc",pf:"decimal",cn:"num",th:"auto",view:"flow",cht:8}};
 var S,mode="write",$=function(i){return document.getElementById(i)};
 var SIZES={A5:[148,210],"6x9":[152.4,228.6],"5x8":[127,203.2],A4:[210,297],Letter:[215.9,279.4]};
-var MAP={sFf:"ff",sFs:"fs",sLh:"lh",sPs:"ps",sInd:"ind",sAl:"al",sMx:"mx",sMy:"my",sSz:"sz",sPn:"pn",sPf:"pf",sCn:"cn",sTh:"th",vw:"view"};
+var MAP={sFf:"ff",sFs:"fs",sLh:"lh",sPs:"ps",sInd:"ind",sAl:"al",sMx:"mx",sMy:"my",sSz:"sz",sPn:"pn",sPf:"pf",sCn:"cn",sTh:"th",vw:"view",sCh:"cht"};
 function cur(){return S.chapters[S.cur]}
 function toast(m){var t=$("toast");t.textContent=m;t.className="s";setTimeout(function(){t.className=""},3500)}
 function today(){return new Date().toISOString().slice(0,10)}
@@ -228,7 +229,7 @@ function bootSave(){return idbOpen().then(function(d){db=d;try{if(navigator.stor
 
 /* ---------- Einstellungen ---------- */
 function applySettings(){var s=S.s,r=document.documentElement,sz=SIZES[s.sz]||SIZES.A5;
- var v={ff:s.ff,fs:s.fs+"pt",lh:s.lh,ps:s.ps+"em",ind:s.ind+"em",al:s.al,pw:sz[0]+"mm",ph:sz[1]+"mm",mx:s.mx+"mm",mt:s.my+"mm"};
+ var v={ff:s.ff,fs:s.fs+"pt",lh:s.lh,ps:s.ps+"em",ind:s.ind+"em",al:s.al,pw:sz[0]+"mm",ph:sz[1]+"mm",mx:s.mx+"mm",mt:s.my+"mm",cht:s.cht+"%"};
  for(var k in v)r.style.setProperty("--"+k,v[k]);
  $("sheet").classList.toggle("dc",s.dc);$("sheet").classList.toggle("paged",s.view!=="flow");$("pgbar").hidden=s.view==="flow";
  if(s.th==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",s.th);
@@ -267,13 +268,14 @@ function stats(){var tot=0,wp=wordsPerPage(),pages=0,rows="",nc=0;
  var t=today();if(!S.log||S.log.base===undefined||S.log.date!==t)S.log={date:t,base:tot};
  var dw=Math.max(0,tot-S.log.base),dg=S.dgoal||0;$("dbar").style.width=(dg?Math.min(100,dw/dg*100):0)+"%";$("dtxt").textContent=dw.toLocaleString("de-DE")+" Wörter heute"+(dg?" von "+dg:"")}
 
+function clean(html){var d=document.createElement("div");d.innerHTML=html;d.querySelectorAll("*").forEach(function(n){var keep=n.tagName==="IMG"?n.style.width:"";["style","width","height","align","face","size","color","bgcolor","nowrap"].forEach(function(a){n.removeAttribute(a)});if(keep)n.style.width=keep;if(n.className&&!n.classList.contains("sb"))n.removeAttribute("class")});return d.innerHTML}
 /* ---------- Buch bauen ---------- */
 function labels(){var n=0;return S.chapters.map(function(c){if(c.k!=="chapter")return esc(name(c));n++;var t=esc(c.title||""),m=S.s.cn;
  return m==="only"?(t||"Kapitel "+n):m==="n"?String(n):"Kapitel "+n+(t?": "+t:"")})}
 function buildBook(){var L=labels(),h='<div class="bk'+(S.s.dc?" dc":"")+'">';
  if(S.titlePage)h+=coverHTML();
  if(S.toc){h+='<div class="toc pb" data-j="Inhalt"><h2>Inhalt</h2>';S.chapters.forEach(function(c,i){if(!NOTOC[c.k])h+='<p><b>'+L[i]+'</b></p>'});h+='</div>'}
- S.chapters.forEach(function(c,i){h+='<section class="pb k-'+c.k+'" data-j="'+esc(name(c))+'">'+(c.k==="widmung"||c.k==="impressum"?'':'<h2>'+L[i]+'</h2>')+'<div>'+c.html+'</div></section>'});
+ S.chapters.forEach(function(c,i){h+='<section class="pb k-'+c.k+'" data-j="'+esc(name(c))+'">'+(c.k==="widmung"||c.k==="impressum"?'':'<h2>'+L[i]+'</h2>')+'<div>'+clean(c.html)+'</div></section>'});
  return h+'</div>'}
 
 /* ---------- Seitenvorschau (echter Umbruch per Spalten) ---------- */
@@ -366,7 +368,12 @@ function bind(){
  $("ed").addEventListener("click",function(e){document.querySelectorAll("#ed img").forEach(function(i){i.style.outline=""});
   if(e.target.tagName==="IMG"){selImg=e.target;selImg.style.outline="2px solid var(--acc)"}else selImg=null});
  $("imgw").onchange=function(){if(selImg&&this.value){selImg.style.width=this.value+"%";changed()}else if(!selImg)toast("Klicke zuerst auf ein Bild.");this.value=""};
- $("ed").addEventListener("paste",function(e){var f=e.clipboardData&&e.clipboardData.files&&e.clipboardData.files[0];if(f&&f.type.indexOf("image")===0){e.preventDefault();image(f)}});
+ $("ed").addEventListener("paste",function(e){var cd=e.clipboardData;if(!cd)return;var f=cd.files&&cd.files[0];if(f&&f.type.indexOf("image")===0){e.preventDefault();image(f);return}
+  var t=cd.getData("text/plain");if(!t)return;e.preventDefault();
+  var parts=t.replace(/\r/g,"").split(/\n+/).filter(function(x){return x.trim()});
+  if(parts.length<2)document.execCommand("insertText",false,t.trim());
+  else document.execCommand("insertHTML",false,parts.map(function(x){return "<p>"+esc(x.trim())+"</p>"}).join(""));
+  changed()});
  document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){document.querySelectorAll(".tabs button").forEach(function(x){x.classList.toggle("on",x===b)});
   document.querySelectorAll(".pane").forEach(function(p){p.classList.toggle("show",p.id==="p-"+b.dataset.t)})}});
  $("mWrite").onclick=function(){setMode("write")};$("mPv").onclick=function(){setMode("pv")};$("mCv").onclick=function(){setMode("cover")};bindCover();
